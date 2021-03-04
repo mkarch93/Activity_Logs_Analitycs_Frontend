@@ -1,13 +1,28 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@import '~antd/dist/antd.compact.css';
+
+.ant-layout {
+    height: 100vh;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+[data-theme='compact'] .ant-advanced-search-form,
+.ant-advanced-search-form {
+    padding: 24px;
+    background: #fbfbfb;
+    border: 1px solid #d9d9d9;
+    border-radius: 2px;
+}
+
+[data-theme='compact'] .ant-advanced-search-form .ant-form-item,
+.ant-advanced-search-form .ant-form-item {
+    display: flex;
+}
+
+[data-theme='compact'] .ant-advanced-search-form .ant-form-item-control-wrapper,
+.ant-advanced-search-form .ant-form-item-control-wrapper {
+    flex: 1;
+}
+
+.ant-spin-nested-loading{
+    display: flex;
+    height: 100%;
 }
