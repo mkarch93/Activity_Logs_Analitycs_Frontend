@@ -26,3 +26,10 @@
     display: flex;
     height: 100%;
 }
+
+.custom-tooltip {
+    background: white;
+    border: 1px solid #d9d9d9;
+    padding: 15px;
+    border-radius: 2px;
+}

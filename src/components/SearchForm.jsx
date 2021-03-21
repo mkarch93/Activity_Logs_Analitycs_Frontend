@@ -1,19 +1,18 @@
 import React from 'react';
 import { Form, Row, Col, Select, DatePicker } from 'antd';
+import { activityTypes } from './settings';
+const {Option} = Select;
 
-const SearchForm = () => {
-    const [form] = Form.useForm();
+const SearchForm = ({onChange}) => {
 
-    const onFinish = (values) => {
-        console.log('Received values of form: ', values);
-    };
+    const handleChange = (name) => (value) => {
+        onChange(name, value)
+    }
 
     return (
         <Form
-            form={form}
             name={"advanced_search"}
             className="ant-advanced-search-form"
-            onFinish={onFinish}
             layout="vertical"
         >
             <Row gutter={24}>
@@ -27,9 +26,12 @@ const SearchForm = () => {
                             allowClear
                             style={{ width: '100%' }}
                             placeholder="Please select"
-                            defaultValue={['a10', 'c12']}
+                            onChange={handleChange('statuses')}
+                            defaultValue={['SUCCESS', 'FAIL', 'IN_PROCESS']}
                         >
-                         <Select.Option>dbkldfbnldfknb</Select.Option>
+                            <Option value="SUCCESS">SUCCESS</Option>
+                            <Option value="FAIL">FAIL</Option>
+                            <Option value="IN_PROCESS">IN_PROCESS</Option>
                         </Select>
                     </Form.Item>
                 </Col>
@@ -43,20 +45,22 @@ const SearchForm = () => {
                             allowClear
                             style={{ width: '100%' }}
                             placeholder="Please select"
-                            defaultValue={['a10', 'c12']}
+                            onChange={handleChange('activityTypes')}
                         >
-                            <Select.Option>dbkldfbnldfknb</Select.Option>
+                            {activityTypes.map(v => <Option value={v} key={v}>{v}</Option>)}
                         </Select>
                     </Form.Item>
                 </Col>
             </Row>
             <Row>
-                <Col span={24} key="activityTypes">
+                <Col span={24} key="dateTime">
                     <Form.Item
-                        name="activityTypes"
-                        label="Activity types"
+                        name="dateTime"
+                        label="Date time"
                     >
-                        <DatePicker.RangePicker showTime style={{ width: '100%' }}/>
+                        <DatePicker.RangePicker
+                            onChange={handleChange('dateTime')}
+                            showTime style={{ width: '100%' }}/>
                     </Form.Item>
                 </Col>
             </Row>

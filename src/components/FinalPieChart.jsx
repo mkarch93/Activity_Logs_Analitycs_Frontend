@@ -1,31 +1,77 @@
 import React from 'react';
-import { Spin } from 'antd';
-import { PieChart, Pie, Tooltip, ResponsiveContainer } from 'recharts';
+import { PieChart, Pie, Tooltip, ResponsiveContainer, Cell } from 'recharts';
+import { Badge} from 'antd';
 
-const data01 = [
-    { name: 'Group A', value: 400, uv: 400 },
-    { name: 'Group B', value: 300 },
-    { name: 'Group C', value: 300 },
-    { name: 'Group D', value: 200 },
-    { name: 'Group E', value: 278 },
-    { name: 'Group F', value: 189 },
+const colors = [
+    'pink',
+    'red',
+    'yellow',
+    'orange',
+    'cyan',
+    'green',
+    'blue',
+    'purple',
+    'geekblue',
+    'magenta',
+    'volcano',
+    'gold',
+    'lime',
 ];
 
-const FinalPieChart = () => (
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+const OFFSET = 5;
+
+const RADIAN = Math.PI / 180;
+const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
+    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+    return (
+        <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
+            {`${(percent * 100).toFixed(0)}%`}
+        </text>
+    );
+};
+
+const CustomTooltip = ({ active, payload }) => {
+    if (active && payload && payload.length) {
+        const {name, value, payload: atList} = payload[0];
+        const sortedList = atList.activityTypes.sort((a,b) => b.atCount - a.atCount)
+        const topFive = sortedList.slice(0,OFFSET)
+        const others = sortedList.slice(OFFSET).reduce((acc, val) => acc + val.atPercent, 0);
+        return (
+            <div className="custom-tooltip">
+                <p className="label">{`${name} : ${value}`}</p>
+                {topFive.map((v, i) => <p><Badge key={i} color={colors[i]} text={`${v.atName} : ${v.atPercent.toFixed(2)}%`}/></p>)}
+                {others ? <p><Badge color="grey" text={`Other: ${others.toFixed(2)}%`}/></p> : null}
+            </div>
+        );
+    }
+    return null;
+};
+
+
+const FinalPieChart = ({chartData}) => (
         <ResponsiveContainer>
             <PieChart>
                 <Pie
                     dataKey="value"
                     isAnimationActive={false}
-                    data={data01}
+                    data={chartData}
                     cx="50%"
                     cy="40%"
-                    innerRadius="45%" outerRadius="60%"
+                    innerRadius="35%" outerRadius="60%"
+                    labelLine={false}
                     fill="#8884d8"
-                    label
+                    label={renderCustomizedLabel}
                     options={{ maintainAspectRatio: false, aspectRatio: 1,  }}
-                />
-                <Tooltip />
+                >
+                    {chartData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                </Pie>
+                <Tooltip content={<CustomTooltip />} />
             </PieChart>
         </ResponsiveContainer>
     );
