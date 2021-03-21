@@ -1,4 +1,4 @@
-export const url = "http://localhost:8080/api/json";
+export const url = "http://localhost:8080/api/chart";
 
 export const fetchConfig = {
     method: 'POST', // *GET, POST, PUT, DELETE, etc.
